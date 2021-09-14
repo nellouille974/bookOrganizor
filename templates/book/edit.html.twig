@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block body %}
+    <h1>Modifier</h1>
+	<div class="container mt-4">
+    	{{ include('book/_form.html.twig', {'button_label': 'Editer'}) }}
+	</div>
+{% endblock %}

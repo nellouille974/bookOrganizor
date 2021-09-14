@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Mes livres' %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+  <div class="jumbotron">
+    <div class="container">
+      {{ form_start(form) }}
+      <div class="form-row align-items-end">
+        <div class="col">
+          {{ form_row(form.minPage) }}
+        </div>
+        <div class="col">
+          {{ form_row(form.options) }}
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <button class="btn btn-primary">Rechercher</button>
+          </div>
+        </div>
+      </div>
+      {{ form_end(form) }}
+    </div>
+  </div>
+  <div class="container mt-4">
+    <h1>Liste des livres</h1>
+
+    <div class="row">
+      {% for book in books %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+          {% if book.filename %}
+            <img src="{{ vich_uploader_asset(book, 'imageFile') | imagine_filter('thumb') }}" alt="card-img-top" style="width: 100%; height:auto;">
+            {% else %}
+              <img src="{{ '/images/books/empty.jpg' | imagine_filter('thumb') }}" alt="card-img-top" style="width: 100%; height:auto;">
+          {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a href="{{ path('book_show', {'id': book.id, 'slug' : book.slug}) }}">
+                    {{ book.title }}
+                  </a>
+                </h5>
+                <p class="card-text">De <span style="font-weight: bold;">{{ book.author }}</span></p>
+                <div class="text-primary" font-weight: bold;">
+                  ISBN : {{ book.isbn }}
+                </div>
+              </div>
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="pagination">
+      {{ knp_pagination_render(books) }}
+    </div>
+  </div>
+
+      <a href="{{ path('book_new') }}">Entrer un nouveau livre manuellement</a>
+      
+{% endblock %}

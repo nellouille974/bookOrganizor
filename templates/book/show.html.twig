@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book{% endblock %}
+
+{% block body %}
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                  {% if book.filename %}
+                    <img src="{{ vich_uploader_asset(book, 'imageFile') | imagine_filter('medium') }}" alt="card-img-top" style="width: 100%; height:auto;">
+                  {% else %}
+                    <img src="{{ '/images/books/empty.jpg' | imagine_filter('medium') }}" alt="card-img-top" style="width: 100%; height:auto;">
+                  {% endif %}
+            </div>
+            <div class="col-md-4">
+                <h1>{{ book.title }}</h1>
+                <h2>{{ book.author }}</h2>
+                <a href="{{ path('book_edit', {'id': book.id, 'slug' : book.slug }) }}" class="btn btn-info">Infos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <p>
+        {{ book.description | nl2br }}
+    </p>
+
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Caractéristiques</h2>
+            <table class="table table-striped">
+                <tr>
+                    <td>ISBN</td>
+                    <td>{{ book.isbn}}</td>
+                </tr>
+                <tr>
+                    <td>Catégorie</td>
+                    <td>{{ book.category }}</td>
+                </tr>
+                <tr>
+                    <td>Maison d'édition</td>
+                    <td>{{ book.publishingHouse }}</td>
+                </tr>
+                <tr>
+                    <td>Mes options</td>
+                    <td>
+                        <ul class="list-group">
+                          {% for option in book.options %}
+                          <li class="list-group-item">{{ option.name }}</li>
+                          {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <h2>Actions</h2>
+            <table class="table table-striped">
+                <tr>
+                    <td>Revenir à la liste</td>
+                    <td><a href="{{ path('book_index') }}" class="btn btn-primary">Retour</a></td>
+                </tr>
+                <tr>
+                    <td>Modifier cette fiche</td>
+                    <td><a href="{{ path('book_edit' ,  {'id': book.id, 'slug' : book.slug }) }}" class="btn btn-warning">Modifier</a></td>
+                </tr>
+                <tr>
+                    <td>Effacer définitivement ce livre</td>
+                    <td>{{ include('book/_delete_form.html.twig') }}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
